@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -59,6 +61,9 @@
             height: auto;
             margin-top: 10px;
         }
+        .tab-content {
+            margin-top: 30px;
+        }
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -77,11 +82,59 @@
         <p>Your path to academic success!</p>
     </header>
 
-    <div class="container text-center">
-        <h2>Join Our Tutoring Sessions!</h2>
-        <p>We provide personalized tutoring in a variety of subjects to help students succeed.</p>
-        <p>Sign up now to reserve your spot!</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc5u3RFzD2xpDtPIRu9qLeh2M0w_XP9XyFFyDbbxolGkn9RmA/viewform?usp=sf_link" class="btn btn-primary btn-lg">Sign Up Here</a>
+    <!-- Navbar for tabs -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Smart Step Tutoring</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#meet-the-team">Meet the Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#your-schedule">Your Schedule</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#what-we-teach">What We Teach</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sign-up">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Meet the Team Tab -->
+        <div id="meet-the-team" class="tab-content">
+            <h2>Meet the Team</h2>
+            <p>Our experienced and dedicated tutors are here to help you succeed!</p>
+            <!-- You can list team members and their profiles here -->
+        </div>
+
+        <!-- Your Schedule Tab (for signed-in users) -->
+        <div id="your-schedule" class="tab-content">
+            <h2>Your Schedule</h2>
+            <div id="schedule">
+                <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
+                <!-- Schedule will appear here after sign-in -->
+            </div>
+        </div>
+
+        <!-- What We Teach Tab -->
+        <div id="what-we-teach" class="tab-content">
+            <h2>What We Teach</h2>
+            <p>We offer a wide range of subjects including Math, Science, English, and more!</p>
+        </div>
+
+        <!-- Sign Up Tab -->
+        <div id="sign-up" class="tab-content">
+            <h2>Sign Up</h2>
+            <p>Sign up to reserve your spot for tutoring sessions.</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSc5u3RFzD2xpDtPIRu9qLeh2M0w_XP9XyFFyDbbxolGkn9RmA/viewform?usp=sf_link" class="btn btn-primary btn-lg">Sign Up Here</a>
+        </div>
     </div>
 
     <footer>
@@ -89,9 +142,100 @@
         <img src="https://github.com/omarhabli/SmartStep-Tutoring/blob/main/Flyer1.jpg?raw=true" alt="Smart Step Tutoring Logo">
     </footer>
 
+    <!-- Firebase Script and Initialization -->
+    <script>
+        // Firebase Configuration (replace with your Firebase details)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const firestore = firebase.firestore();
+
+        // Google Sign-In Button Functionality
+        function onSignIn(googleUser) {
+            const credential = firebase.auth.GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
+            firebase.auth().signInWithCredential(credential)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("User signed in: ", user.displayName);
+                    fetchUserSchedule(user.uid);
+                })
+                .catch((error) => {
+                    console.error("Error during sign-in: ", error);
+                });
+        }
+
+        function renderButton() {
+            gapi.signin2.render('google-signin-button', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSignIn
+            });
+        }
+
+        gapi.load('auth2', function() {
+            gapi.auth2.init().then(renderButton);
+        });
+
+        // Fetch User Schedule from Firestore
+        function fetchUserSchedule(userId) {
+            const scheduleRef = firestore.collection("users").doc(userId).collection("schedule");
+            scheduleRef.get().then((querySnapshot) => {
+                if (!querySnapshot.empty) {
+                    const schedule = [];
+                    querySnapshot.forEach(doc => {
+                        schedule.push(doc.data());
+                    });
+                    console.log("User Schedule: ", schedule);
+                    displayUserSchedule(schedule);
+                } else {
+                    console.log("No schedule data found for the user.");
+                }
+            }).catch((error) => {
+                console.error("Error fetching schedule: ", error);
+            });
+        }
+
+        // Display User Schedule
+        function displayUserSchedule(schedule) {
+            const scheduleContainer = document.getElementById("schedule");
+            scheduleContainer.innerHTML = "<h2>Your Schedule</h2>";  // Clear existing content
+
+            if (schedule.length > 0) {
+                schedule.forEach(session => {
+                    const sessionElement = document.createElement("div");
+                    sessionElement.innerHTML = `
+                        <p><strong>Subject:</strong> ${session.subject}</p>
+                        <p><strong>Date:</strong> ${session.date}</p>
+                        <p><strong>Time:</strong> ${session.time}</p>
+                        <hr>
+                    `;
+                    scheduleContainer.appendChild(sessionElement);
+                });
+            } else {
+                scheduleContainer.innerHTML += "<p>You don't have any sessions scheduled yet.</p>";
+            }
+        }
+    </script>
+
+    <!-- Firebase and Google API Scripts -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>
