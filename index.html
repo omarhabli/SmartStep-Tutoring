@@ -5,128 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
-            color: #343a40;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 60px 20px;
+            font-family: Arial, sans-serif;
             text-align: center;
         }
-        header img {
-            margin-bottom: 20px;
-            max-width: 150px;
-            border-radius: 50%;
-        }
-        h1, h2 {
-            font-weight: 700;
-        }
         .container {
-            margin-top: 20px;
-            padding: 30px;
+            margin-top: 30px;
+            padding: 20px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
         }
-        .btn-primary:hover {
-            background-color: #45A049;
-        }
-        .navbar {
-            padding: 1rem 2rem;
-        }
-        footer {
-            background-color: #343a40;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .tab-content {
-            padding: 20px 0;
+        .section {
+            display: none;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <img src="https://github.com/omarhabli/SmartStep-Tutoring/blob/main/Logo.jpg?raw=true" alt="Tutoring Image">
-        <h1>Welcome to Smart Step Tutoring</h1>
-        <p>Your path to academic success!</p>
-    </header>
+<header>
+    <h1>Welcome to Smart Step Tutoring</h1>
+</header>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#">Smart Step Tutoring</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#meet-the-team">Meet the Team</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#your-schedule">Your Schedule</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#what-we-teach">What We Teach</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#sign-up">Sign Up</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<div id="login-section" class="container">
+    <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
+</div>
 
-    <div class="container mt-5">
-        <!-- Meet the Team Section -->
-        <div id="meet-the-team" class="tab-content">
-            <h2>Meet the Team</h2>
-            <p>Our experienced and dedicated tutors are here to help you succeed!</p>
-        </div>
+<div id="main-content" class="container" style="display: none;">
+    <h2 id="welcome-message"></h2>
+    <button class="btn btn-primary" onclick="showSection('math')">Math</button>
+    <button class="btn btn-primary" onclick="showSection('reading')">Reading/English</button>
+    <button class="btn btn-primary" onclick="showSection('sciences')">Sciences</button>
+    <button class="btn btn-primary" onclick="showSection('contact')">Contact Us</button>
+    <button class="btn btn-primary" onclick="showSection('schedule')">Show Schedule</button>
+    <button class="btn btn-danger" onclick="signOut()">Sign Out</button>
 
-        <!-- Your Schedule Section -->
-        <div id="your-schedule" class="tab-content">
-            <h2>Your Schedule</h2>
-            <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
-        </div>
-
-        <!-- What We Teach Section -->
-        <div id="what-we-teach" class="tab-content">
-            <h2>What We Teach</h2>
-            <p>We offer a wide range of subjects including Math, Science, English, and more!</p>
-        </div>
-
-        <!-- Sign Up Section -->
-        <div id="sign-up" class="tab-content">
-            <h2>Sign Up</h2>
-            <p>Sign up to reserve your spot for tutoring sessions.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSc5u3RFzD2xpDtPIRu9qLeh2M0w_XP9XyFFyDbbxolGkn9RmA/viewform?usp=sf_link" class="btn btn-primary btn-lg">Sign Up Here</a>
-        </div>
+    <div id="math" class="section">
+        <h3>Math</h3>
+        <p>Comprehensive math courses from basic arithmetic to advanced calculus.</p>
     </div>
+    <div id="reading" class="section">
+        <h3>Reading/English</h3>
+        <p>Courses designed to enhance literacy skills.</p>
+    </div>
+    <div id="sciences" class="section">
+        <h3>Sciences</h3>
+        <p>Our Science curriculum covers various fields: Biology, Chemistry, and Physics.</p>
+    </div>
+    <div id="contact" class="section">
+        <h3>Contact Us</h3>
+        <p>Reach out at: support@smartsteptutoring.com</p>
+    </div>
+    <div id="schedule" class="section">
+        <h3>Your Schedule</h3>
+        <div id="schedule-content"></div>
+    </div>
+</div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Smart Step Tutoring | All Rights Reserved</p>
-    </footer>
+<!-- Firebase Configuration -->
+<script>
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Google Sign-In
+    const provider = new firebase.auth.GoogleAuthProvider();
+    document.getElementById('google-signin-button').addEventListener('click', () => {
+        auth.signInWithPopup(provider).then((result) => {
+            const user = result.user;
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName}`;
+            loadUserSchedule(user.uid);
+        }).catch((error) => {
+            console.error("Error signing in:", error);
+        });
+    });
+
+    // Load schedule if user is authenticated
+    function loadUserSchedule(userId) {
+        db.collection("users").doc(userId).collection("schedule").get()
+        .then((querySnapshot) => {
+            let scheduleHTML = "";
+            querySnapshot.forEach((doc) => {
+                const session = doc.data();
+                scheduleHTML += `
+                    <p><strong>Subject:</strong> ${session.subject}</p>
+                    <p><strong>Date:</strong> ${session.date}</p>
+                    <p><strong>Time:</strong> ${session.time}</p><hr>`;
+            });
+            document.getElementById("schedule-content").innerHTML = scheduleHTML;
+        }).catch((error) => {
+            console.error("Error loading schedule:", error);
+        });
+    }
+
+    // Show section
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+    }
+
+    // Sign out
+    function signOut() {
+        auth.signOut().then(() => {
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('main-content').style.display = 'none';
+        }).catch((error) => {
+            console.error("Error signing out:", error);
+        });
+    }
+</script>
+
 </body>
 </html>
