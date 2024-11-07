@@ -5,50 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
             color: #343a40;
             font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
         }
         header {
             background-color: #007bff;
             color: white;
-            padding: 40px 0;
+            padding: 60px 20px;
             text-align: center;
         }
         header img {
             margin-bottom: 20px;
             max-width: 150px;
+            border-radius: 50%;
         }
-        h1 {
-            font-size: 2.5rem;
-            margin: 10px 0;
-        }
-        h2 {
-            font-size: 2rem;
-            margin: 20px 0;
+        h1, h2 {
+            font-weight: 700;
         }
         .container {
-            margin-top: 30px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 30px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #28a745;
+            background-color: #4CAF50;
             border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            transition: background-color 0.3s;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: #218838;
+            background-color: #45A049;
+        }
+        .navbar {
+            padding: 1rem 2rem;
         }
         footer {
             background-color: #343a40;
@@ -56,41 +54,29 @@
             padding: 20px 0;
             text-align: center;
         }
-        footer img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-        }
         .tab-content {
-            margin-top: 30px;
-        }
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
+            padding: 20px 0;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
         <img src="https://github.com/omarhabli/SmartStep-Tutoring/blob/main/Logo.jpg?raw=true" alt="Tutoring Image">
         <h1>Welcome to Smart Step Tutoring</h1>
         <p>Your path to academic success!</p>
     </header>
 
-    <!-- Navbar for tabs -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="#">Smart Step Tutoring</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#meet-the-team">Meet the Team</a>
                 </li>
                 <li class="nav-item">
@@ -106,30 +92,26 @@
         </div>
     </nav>
 
-    <div class="container">
-        <!-- Meet the Team Tab -->
+    <div class="container mt-5">
+        <!-- Meet the Team Section -->
         <div id="meet-the-team" class="tab-content">
             <h2>Meet the Team</h2>
             <p>Our experienced and dedicated tutors are here to help you succeed!</p>
-            <!-- You can list team members and their profiles here -->
         </div>
 
-        <!-- Your Schedule Tab (for signed-in users) -->
+        <!-- Your Schedule Section -->
         <div id="your-schedule" class="tab-content">
             <h2>Your Schedule</h2>
-            <div id="schedule">
-                <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
-                <!-- Schedule will appear here after sign-in -->
-            </div>
+            <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
         </div>
 
-        <!-- What We Teach Tab -->
+        <!-- What We Teach Section -->
         <div id="what-we-teach" class="tab-content">
             <h2>What We Teach</h2>
             <p>We offer a wide range of subjects including Math, Science, English, and more!</p>
         </div>
 
-        <!-- Sign Up Tab -->
+        <!-- Sign Up Section -->
         <div id="sign-up" class="tab-content">
             <h2>Sign Up</h2>
             <p>Sign up to reserve your spot for tutoring sessions.</p>
@@ -137,103 +119,12 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Smart Step Tutoring | All Rights Reserved</p>
-        <img src="https://github.com/omarhabli/SmartStep-Tutoring/blob/main/Flyer1.jpg?raw=true" alt="Smart Step Tutoring Logo">
     </footer>
 
-    <!-- Firebase Script and Initialization -->
-    <script>
-        // Firebase Configuration (replace with your Firebase details)
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID",
-            measurementId: "YOUR_MEASUREMENT_ID"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const firestore = firebase.firestore();
-
-        // Google Sign-In Button Functionality
-        function onSignIn(googleUser) {
-            const credential = firebase.auth.GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
-            firebase.auth().signInWithCredential(credential)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("User signed in: ", user.displayName);
-                    fetchUserSchedule(user.uid);
-                })
-                .catch((error) => {
-                    console.error("Error during sign-in: ", error);
-                });
-        }
-
-        function renderButton() {
-            gapi.signin2.render('google-signin-button', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSignIn
-            });
-        }
-
-        gapi.load('auth2', function() {
-            gapi.auth2.init().then(renderButton);
-        });
-
-        // Fetch User Schedule from Firestore
-        function fetchUserSchedule(userId) {
-            const scheduleRef = firestore.collection("users").doc(userId).collection("schedule");
-            scheduleRef.get().then((querySnapshot) => {
-                if (!querySnapshot.empty) {
-                    const schedule = [];
-                    querySnapshot.forEach(doc => {
-                        schedule.push(doc.data());
-                    });
-                    console.log("User Schedule: ", schedule);
-                    displayUserSchedule(schedule);
-                } else {
-                    console.log("No schedule data found for the user.");
-                }
-            }).catch((error) => {
-                console.error("Error fetching schedule: ", error);
-            });
-        }
-
-        // Display User Schedule
-        function displayUserSchedule(schedule) {
-            const scheduleContainer = document.getElementById("schedule");
-            scheduleContainer.innerHTML = "<h2>Your Schedule</h2>";  // Clear existing content
-
-            if (schedule.length > 0) {
-                schedule.forEach(session => {
-                    const sessionElement = document.createElement("div");
-                    sessionElement.innerHTML = `
-                        <p><strong>Subject:</strong> ${session.subject}</p>
-                        <p><strong>Date:</strong> ${session.date}</p>
-                        <p><strong>Time:</strong> ${session.time}</p>
-                        <hr>
-                    `;
-                    scheduleContainer.appendChild(sessionElement);
-                });
-            } else {
-                scheduleContainer.innerHTML += "<p>You don't have any sessions scheduled yet.</p>";
-            }
-        }
-    </script>
-
-    <!-- Firebase and Google API Scripts -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <!-- Bootstrap JS and jQuery -->
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
