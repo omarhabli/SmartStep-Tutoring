@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -38,18 +35,13 @@
     <h1>Welcome to Smart Step Tutoring</h1>
 </header>
 
-<div id="login-section" class="container">
-    <button id="google-signin-button" class="btn btn-primary">Sign In with Google</button>
-</div>
-
-<div id="main-content" class="container" style="display: none;">
-    <h2 id="welcome-message"></h2>
+<div id="main-content" class="container">
+    <h2 id="welcome-message">Welcome, Guest!</h2>
     <button class="btn btn-primary" onclick="showSection('math')">Math</button>
     <button class="btn btn-primary" onclick="showSection('reading')">Reading/English</button>
     <button class="btn btn-primary" onclick="showSection('sciences')">Sciences</button>
     <button class="btn btn-primary" onclick="showSection('contact')">Contact Us</button>
     <button class="btn btn-primary" onclick="showSection('schedule')">Show Schedule</button>
-    <button class="btn btn-danger" onclick="signOut()">Sign Out</button>
 
     <div id="math" class="section">
         <h3>Math</h3>
@@ -75,6 +67,7 @@
 
 <!-- Firebase Configuration -->
 <script>
+    // Firebase Configuration
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_AUTH_DOMAIN",
@@ -85,26 +78,11 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Google Sign-In
-    const provider = new firebase.auth.GoogleAuthProvider();
-    document.getElementById('google-signin-button').addEventListener('click', () => {
-        auth.signInWithPopup(provider).then((result) => {
-            const user = result.user;
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName}`;
-            loadUserSchedule(user.uid);
-        }).catch((error) => {
-            console.error("Error signing in:", error);
-        });
-    });
-
-    // Load schedule if user is authenticated
-    function loadUserSchedule(userId) {
-        db.collection("users").doc(userId).collection("schedule").get()
+    // Load schedule directly
+    function loadUserSchedule() {
+        db.collection("users").doc("defaultUser").collection("schedule").get()
         .then((querySnapshot) => {
             let scheduleHTML = "";
             querySnapshot.forEach((doc) => {
@@ -126,15 +104,8 @@
         document.getElementById(sectionId).style.display = 'block';
     }
 
-    // Sign out
-    function signOut() {
-        auth.signOut().then(() => {
-            document.getElementById('login-section').style.display = 'block';
-            document.getElementById('main-content').style.display = 'none';
-        }).catch((error) => {
-            console.error("Error signing out:", error);
-        });
-    }
+    // Load schedule on page load
+    document.addEventListener('DOMContentLoaded', loadUserSchedule);
 </script>
 
 </body>
