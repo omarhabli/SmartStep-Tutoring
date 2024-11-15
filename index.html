@@ -1,112 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="index.html">Smart Step Tutoring</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">What We Offer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="team.html">Meet the Team</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="app.html">Our iOS App</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact.html">Contact Us</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Step Tutoring</title>
+    <title>What We Offer - Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-        }
-        .section {
-            display: none;
-            padding: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<header>
-    <h1>Welcome to Smart Step Tutoring</h1>
-</header>
+<!-- Include Header -->
+<div class="container">
+    <header>
+        <?php include 'header.html'; ?>
+    </header>
 
-<div id="main-content" class="container">
-    <h2 id="welcome-message">Welcome to Your Tutoring Portal!</h2>
-    <button class="btn btn-primary" onclick="showSection('math')">Math</button>
-    <button class="btn btn-primary" onclick="showSection('reading')">Reading/English</button>
-    <button class="btn btn-primary" onclick="showSection('sciences')">Sciences</button>
-    <button class="btn btn-primary" onclick="showSection('contact')">Contact Us</button>
-    <button class="btn btn-primary" onclick="showSection('schedule')">Show Schedule</button>
-
-    <div id="math" class="section">
-        <h3>Math</h3>
-        <p>Comprehensive math courses from basic arithmetic to advanced calculus.</p>
-    </div>
-    <div id="reading" class="section">
-        <h3>Reading/English</h3>
-        <p>Courses designed to enhance literacy skills.</p>
-    </div>
-    <div id="sciences" class="section">
-        <h3>Sciences</h3>
-        <p>Our Science curriculum covers various fields: Biology, Chemistry, and Physics.</p>
-    </div>
-    <div id="contact" class="section">
-        <h3>Contact Us</h3>
-        <p>Reach out at: support@smartsteptutoring.com</p>
-    </div>
-    <div id="schedule" class="section">
-        <h3>Your Schedule</h3>
-        <div id="schedule-content"></div>
-    </div>
+    <section class="content-section">
+        <h1 class="text-center mt-4">What We Offer</h1>
+        <p class="lead text-center">Our tutoring services cover a wide range of subjects, including Math, Science, English, and Test Preparation.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Math</h3>
+                        <p>From basic arithmetic to advanced calculus, we cover it all.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Science</h3>
+                        <p>Biology, Chemistry, Physics, and more, taught by experts in the field.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">English</h3>
+                        <p>Improving literacy, comprehension, and writing skills for all levels.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
-<!-- Firebase Configuration -->
-<script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-    const db = firebase.firestore();
-
-    // Load schedule directly
-    function loadUserSchedule() {
-        db.collection("users").doc("defaultUser").collection("schedule").get()
-        .then((querySnapshot) => {
-            let scheduleHTML = "";
-            querySnapshot.forEach((doc) => {
-                const session = doc.data();
-                scheduleHTML += `
-                    <p><strong>Subject:</strong> ${session.subject}</p>
-                    <p><strong>Date:</strong> ${session.date}</p>
-                    <p><strong>Time:</strong> ${session.time}</p><hr>`;
-            });
-            document.getElementById("schedule-content").innerHTML = scheduleHTML;
-        }).catch((error) => {
-            console.error("Error loading schedule:", error);
-        });
-    }
-
-    // Show section
-    function showSection(sectionId) {
-        document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
-        document.getElementById(sectionId).style.display = 'block';
-    }
-
-    // Load schedule on page load
-    document.addEventListener('DOMContentLoaded', loadUserSchedule);
-</script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
