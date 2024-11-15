@@ -1,20 +1,75 @@
 body {
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
+    text-align: center; /* Center align text for consistency */
 }
 
+/* Navigation Bar Styling */
 .navbar {
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #007bff; /* Primary blue color */
+    position: sticky; /* Makes navbar stick to top when scrolling */
+    top: 0;
+    z-index: 1000;
 }
 
+.navbar .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar .nav-btn {
+    background: transparent;
+    color: white;
+    border: 2px solid transparent;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 30px;
+    transition: all 0.3s ease-in-out;
+    margin: 0 10px;
+}
+
+.navbar .nav-btn:hover {
+    background-color: white;
+    color: #007bff;
+    border-color: #007bff;
+    transform: scale(1.1); /* Subtle scaling effect */
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    .nav-btn {
+        margin: 10px 0;
+    }
+}
+
+/* Content Section Styling */
 .content-section {
     padding: 40px 0;
+    text-align: center; /* Center align content */
 }
 
 .card {
     border: none;
     margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for cards */
+    border-radius: 10px;
 }
 
 .card-title {
