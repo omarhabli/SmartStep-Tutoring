@@ -7,26 +7,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Additional Page-Specific Styling */
+        /* General Body Styling */
         body {
-            background: linear-gradient(to right, #007bff, #00c6ff);
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             color: white;
             font-family: 'Arial', sans-serif;
         }
 
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .navbar .nav-btn {
+            border: 2px solid white;
+            color: white;
+            font-weight: bold;
+            padding: 8px 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar .nav-btn:hover {
+            background-color: white;
+            color: #6a11cb;
+        }
+
+        /* Page Header */
         h1 {
             font-size: 3rem;
             font-weight: bold;
             text-transform: uppercase;
+            margin: 80px 0 20px;
             letter-spacing: 2px;
-            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .lead {
             font-size: 1.5rem;
             margin-bottom: 40px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
         }
 
+        /* Cards */
         .card {
             background: white;
             color: #333;
@@ -34,39 +60,39 @@
             border-radius: 15px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
         }
 
         .card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
         .card-title {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #007bff;
+            color: #6a11cb;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #0056b3;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 50px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="#">Smart Step Tutoring</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -74,51 +100,54 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <button class="btn nav-btn text-white" onclick="window.location.href='index.html'">What We Offer</button>
+                <button class="btn nav-btn" onclick="window.location.href='index.html'">What We Offer</button>
             </li>
             <li class="nav-item">
-                <button class="btn nav-btn text-white" onclick="window.location.href='team.html'">Meet the Team</button>
+                <button class="btn nav-btn" onclick="window.location.href='team.html'">Meet the Team</button>
             </li>
             <li class="nav-item">
-                <button class="btn nav-btn text-white" onclick="window.location.href='app.html'">Our iOS App</button>
+                <button class="btn nav-btn" onclick="window.location.href='app.html'">Our iOS App</button>
             </li>
             <li class="nav-item">
-                <button class="btn nav-btn text-white" onclick="window.location.href='contact.html'">Contact Us</button>
+                <button class="btn nav-btn" onclick="window.location.href='contact.html'">Contact Us</button>
             </li>
         </ul>
     </div>
 </nav>
 
-<!-- Page Content -->
+<!-- Main Content -->
 <div class="container text-center">
     <section class="content-section">
         <h1 class="mt-5">What We Offer</h1>
         <p class="lead">Explore our comprehensive tutoring services designed to help you excel in your academic journey.</p>
         <div class="row justify-content-center">
+            <!-- Math Card -->
             <div class="col-md-4">
                 <div class="card shadow-sm">
+                    <img src="images/kids_math.jpg" alt="Kids Learning Math" class="card-img-top">
                     <div class="card-body">
                         <h3 class="card-title">Math</h3>
                         <p>Master everything from basic arithmetic to advanced calculus with personalized support.</p>
-                        <button class="btn btn-primary">Learn More</button>
                     </div>
                 </div>
             </div>
+            <!-- Science Card -->
             <div class="col-md-4">
                 <div class="card shadow-sm">
+                    <img src="images/kids_science.jpg" alt="Kids Doing Science" class="card-img-top">
                     <div class="card-body">
                         <h3 class="card-title">Science</h3>
                         <p>Delve into Biology, Chemistry, and Physics with expert guidance and tailored resources.</p>
-                        <button class="btn btn-primary">Learn More</button>
                     </div>
                 </div>
             </div>
+            <!-- English Card -->
             <div class="col-md-4">
                 <div class="card shadow-sm">
+                    <img src="images/kids_english.jpg" alt="Kids Reading Books" class="card-img-top">
                     <div class="card-body">
                         <h3 class="card-title">English</h3>
                         <p>Enhance your literacy, comprehension, and writing skills for long-term success.</p>
-                        <button class="btn btn-primary">Learn More</button>
                     </div>
                 </div>
             </div>
@@ -126,7 +155,11 @@
     </section>
 </div>
 
-<!-- Scripts -->
+<!-- Footer -->
+<footer>
+    <p>&copy; 2023 Smart Step Tutoring. All Rights Reserved.</p>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
