@@ -38,18 +38,16 @@
             margin-right: 10px;
         }
 
-        /* Flexbox Layout for Navbar */
         .navbar-collapse {
             display: flex;
-            justify-content: flex-end; /* Pushes navigation buttons to the right */
+            justify-content: flex-end;
         }
 
-        /* Remove bullet points from navbar items */
         .navbar-nav {
             display: flex;
             justify-content: flex-end;
-            list-style-type: none; /* Remove bullet points */
-            padding-left: 0; /* Ensure no padding on the left */
+            list-style-type: none;
+            padding-left: 0;
         }
 
         .nav-item .nav-btn {
@@ -72,7 +70,7 @@
             font-size: 3.5rem;
             font-weight: bold;
             text-transform: uppercase;
-            margin: 120px 0 20px; /* Adjusted margin to create space from navbar */
+            margin: 160px 0 20px; /* Adjusted margin for more space from navbar */
             letter-spacing: 2px;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -83,7 +81,6 @@
             text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
         }
 
-        /* Decorative Line Below Header */
         .divider {
             width: 100px;
             height: 5px;
@@ -152,7 +149,7 @@
                 <button class="btn nav-btn" onclick="window.location.href='app.html'">Our iOS App</button>
             </li>
             <li class="nav-item">
-                <button class="btn nav-btn" onclick="window.location.href='contact.html'">Contact Us</button>
+                <button class="btn nav-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSc5u3RFzD2xpDtPIRu9qLeh2M0w_XP9XyFFyDbbxolGkn9RmA/viewform?usp=sf_link', '_blank')">Sign Up</button>
             </li>
         </ul>
     </div>
