@@ -6,9 +6,11 @@
     <title>What We Offer - Smart Step Tutoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-    <script>
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js';
+
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCHM_cp8V47VfEUOgILuGOGqZhBVrETo78",
@@ -20,13 +22,13 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
         // Sign In with Google
         function signInWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
                 .then((result) => {
                     updateSignInStatus(result.user);
                 })
@@ -36,8 +38,8 @@
         }
 
         // Sign Out
-        function signOut() {
-            auth.signOut().then(() => {
+        function signOutUser() {
+            signOut(auth).then(() => {
                 updateSignInStatus(null);
             }).catch((error) => {
                 console.error("Error signing out: ", error);
@@ -51,7 +53,7 @@
                 signInStatus.classList.remove("btn-danger");
                 signInStatus.classList.add("btn-success");
                 signInStatus.textContent = "Signed In";
-                signInStatus.onclick = signOut;
+                signInStatus.onclick = signOutUser;
             } else {
                 signInStatus.classList.remove("btn-success");
                 signInStatus.classList.add("btn-danger");
